@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title th:text="${title}"></title>
+</head>
+<body>
+<h1 th:text="${title}"></h1>
+<ul>
+	<li>
+		<a th:href="@{/vars/string/} + 'hello Diego'">/vars/string/hello Diego</a>
+	</li>
+	<li>
+		<a th:href="@{/vars/string/} + 'hello Alma'">/vars/string/hello Alma</a>
+	</li>
+	<li>
+		<a th:href="@{/vars/string/} + 'hello Diego' + '/' + 1">/vars/string/hello Diego/1</a>
+	</li>
+	<li>
+		<a th:href="@{/vars/string/} + ${'hello literal'} + '/' + ${'2'}">/vars/string/hello literral/2</a>
+	</li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Received Value HTTP URL</title>
+</head>
+<body>
+<h1>Received Value HTTP URL</h1>
+<ul>
+	<li>
+		<a th:href="@{/params/string(text='Hola Diego')}">/params/string?text=Hola Diego</a>
+	</li>
+	<li>
+		<a th:href="@{/params/string(text='Hola papá!!')}">/params/string?text=Hola papá!!</a>
+	</li>
+	<li>
+		<a th:href="@{/params/mix-params(text='Hola papá!!',number=1)}">/params/mix-params?text=Hola papá!!&number=1</a>
+	</li>
+	<li>
+		<a th:href="@{/params/mix-params-request(text='Hola papá!!',number=1)}">/params/mix-params-request?text=Hola papá!!&number=1</a>
+	</li>
+	<li>
+		<a th:href="@{/params/mix-params-request(text='Hola papá!!',number=gas)}">/params/mix-params-request?text=Hola papá!!&number=gas</a>
+	</li>
+</ul>
+</body>
+</html>
