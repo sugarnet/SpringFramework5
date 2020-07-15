@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.dss.di.app.service.GenericService;
+import com.dss.di.app.model.service.GenericService;
 
 @Controller
 public class IndexController {

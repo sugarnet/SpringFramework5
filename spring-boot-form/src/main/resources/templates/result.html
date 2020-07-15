@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>User Form</title>
+</head>
+<body>
+	<h3 th:text="${title}"></h3>
+	<ul>
+		<li th:text="${user.username}"></li>
+		<li th:text="${user.password}"></li>
+		<li th:text="${user.email}"></li>
+	</ul>
+</body>
+</html>

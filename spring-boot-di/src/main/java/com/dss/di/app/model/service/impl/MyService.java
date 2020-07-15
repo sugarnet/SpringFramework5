@@ -1,9 +1,9 @@
-package com.dss.di.app.service.impl;
+package com.dss.di.app.model.service.impl;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import com.dss.di.app.service.GenericService;
+import com.dss.di.app.model.service.GenericService;
 
 // @Service("myService")
 // @Primary // we use primary if we don't user Qualifier for indicate what service use

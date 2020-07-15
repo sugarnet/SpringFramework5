@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+</head>
+<body>
+	<h1 th:text="${title}"></h1>
+	<h3 th:text="${bill.description}"></h3>
+	<div>
+		Client: <span
+			th:utext="${bill.client.name + ' ' + bill.client.lastname}"></span>
+	</div>
+	<h4>Bill Detail</h4>
+	<table>
+		<thead>
+			<tr>
+				<th>Product</th>
+				<th>Quantity</th>
+				<th>Price</th>
+				<th>Total</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="item: ${bill.items}">
+				<td th:text="${item.product.name}"></td>
+				<td th:text="${item.quantity}"></td>
+				<td th:text="${item.product.price}"></td>
+				<td th:text="${item.getTotal()}"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
