@@ -5,25 +5,75 @@
 <title th:text="${title}"></title>
 </head>
 <body>
-	<form th:action="@{/form}" method="post">
+	<!-- we user th:object for indicate an automatic mapping between object user and form fields -->
+	<form th:action="@{/form}" th:object="${user}" method="post">
+	<!--  form th:action="@{/form}" method="post" -->
 		<h3 th:text="${title}"></h3>
+		<div>
+			<label for="identifier">Identifier</label>
+			<div>
+				<input type="text" id="identifier" th:field="*{identifier}" />
+			</div>
+			<div th:if="${#fields.hasErrors('identifier')}" th:errors="*{identifier}"></div>
+		</div>
+		<div>
+			<label for="name">Name</label>
+			<div>
+				<input type="text" id="name" th:field="*{name}" />
+			</div>
+			<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+		</div>
+		<div>
+			<label for="username">Surname</label>
+			<div>
+				<input type="text" id="surname" th:field="*{surname}" />
+			</div>
+			<div th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></div>
+		</div>
 		<div>
 			<label for="username">User</label>
 			<div>
-				<input type="text" name="username" id="username" />
+				<!-- input type="text" name="username" id="username" th:value="${user.username}" /-->
+				<!-- we use th:field for mapping object with the form fields -->
+				<input type="text" id="username" th:field="*{username}" />
 			</div>
+			<!-- div th:if="${errors != null && errors.containsKey('username')}" th:text="${errors.username}"></div-->
+			<div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
 		</div>
 		<div>
 			<label for="password">Password</label>
 			<div>
-				<input type="password" name="password" id="password" />
+				<!--  input type="password" name="password" id="password" / -->
+				<input type="password" id="password" th:field="*{password}" />
 			</div>
+			<!-- div th:if="${errors != null && errors.containsKey('password')}" th:text="${errors.password}"></div-->
+			<div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
 		</div>
 		<div>
 			<label for="username">Email</label>
 			<div>
-				<input type="text" name="email" id="email" />
+				<!-- input type="text" name="email" id="email" th:value="${user.email}" /-->
+				<input type="text" id="email" th:field="*{email}" />
 			</div>
+			<!-- div th:if="${errors != null && errors.containsKey('email')}" th:text="${errors.email}"></div -->
+			<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+			
+		</div>
+		<div>
+			<label for="username">Account</label>
+			<div>
+				<input type="text" id="account" th:field="*{account}" />
+			</div>
+			<div th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></div>
+			
+		</div>
+		<div>
+			<label for="username">Birth Date</label>
+			<div>
+				<input type="date" id="birthDate" th:field="*{birthDate}" />
+			</div>
+			<div th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></div>
+			
 		</div>
 		<div>
 			<div>
