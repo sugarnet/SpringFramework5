@@ -75,6 +75,29 @@
 			<div th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></div>
 			
 		</div>
+		<!--div>
+			<label for="country">Country</label>
+			<div>
+				<select id="country" th:field="*{country}">
+					<option value="">-- Select --</option>
+					<!-- >option th:each="country : ${countries}" th:text="${country}" th:value="${country}"></option>
+					<option th:each="country : ${countriesMap.entrySet()}" th:text="${country.value}" th:value="${country.key}"></option>
+				</select>
+			</div>
+			<div th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></div>
+			
+		</div-->
+		<div>
+			<label for="country">Country</label>
+			<div>
+				<select id="country" th:field="*{country.id}">
+					<option value="">-- Select --</option>
+					<option th:each="country : ${countriesList}" th:text="${country.name}" th:value="${country.id}"></option>
+				</select>
+			</div>
+			<div th:if="${#fields.hasErrors('country.id')}" th:errors="*{country.id}"></div>
+			
+		</div>
 		<div>
 			<div>
 				<input type="submit" value="Send" />

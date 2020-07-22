@@ -2,18 +2,19 @@ package com.dss.form.app.domain;
 
 import java.util.Date;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Future;
+// import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
+// import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
-import javax.validation.constraints.Pattern;
+// import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import org.springframework.format.annotation.DateTimeFormat;
+// import org.springframework.format.annotation.DateTimeFormat;
 
 import com.dss.form.app.validator.IdentifierRegex;
 import com.dss.form.app.validator.ItIsRequired;
@@ -40,25 +41,21 @@ public class User {
 	@NotEmpty
 	@Email
 	private String email;
-	
-	@NotNull // we use it when the field has a referenced type, if the field it is primitive we don't use it
+
+	@NotNull // we use it when the field has a referenced type, if the field it is primitive
+				// we don't use it
 	@Min(10)
 	@Max(10000)
 	private Integer account;
-	
+
 	@NotNull
 	// @DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Past
 	// @Future
 	private Date birthDate;
 
-	public Integer getAccount() {
-		return account;
-	}
-
-	public void setAccount(Integer account) {
-		this.account = account;
-	}
+	@Valid // we use when the field class has validations too
+	private Country country;
 
 	public String getUsername() {
 		return username;
@@ -108,6 +105,14 @@ public class User {
 		this.surname = surname;
 	}
 
+	public Integer getAccount() {
+		return account;
+	}
+
+	public void setAccount(Integer account) {
+		this.account = account;
+	}
+
 	public Date getBirthDate() {
 		return birthDate;
 	}
@@ -115,7 +120,13 @@ public class User {
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
-	
-	
+
+	public Country getCountry() {
+		return country;
+	}
+
+	public void setCountry(Country country) {
+		this.country = country;
+	}
 
 }
