@@ -1,21 +1,18 @@
 package com.dss.form.app.domain;
 
-// import javax.validation.constraints.NotNull;
+public class Role {
 
-public class Country {
-
-	// @NotNull
 	private Integer id;
-	private String code;
 	private String name;
+	private String role;
 
-	public Country() {
+	public Role() {
 	}
 
-	public Country(Integer id, String code, String name) {
+	public Role(Integer id, String name, String role) {
 		this.id = id;
-		this.code = code;
 		this.name = name;
+		this.role = role;
 	}
 
 	public Integer getId() {
@@ -26,20 +23,20 @@ public class Country {
 		this.id = id;
 	}
 
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 }

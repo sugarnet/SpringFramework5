@@ -25,9 +25,13 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.dss.form.app.domain.Country;
+import com.dss.form.app.domain.Role;
 import com.dss.form.app.domain.User;
+import com.dss.form.app.editor.CountryEditor;
+import com.dss.form.app.editor.RoleEditor;
 import com.dss.form.app.editor.UppercaseEditor;
 import com.dss.form.app.service.CountryService;
+import com.dss.form.app.service.RoleService;
 import com.dss.form.app.validator.UserValidator;
 
 @Controller
@@ -36,9 +40,18 @@ public class FormController {
 
 	@Autowired
 	private UserValidator userValidator;
-	
+
 	@Autowired
 	private CountryService countryService;
+
+	@Autowired
+	private RoleService roleService;
+
+	@Autowired
+	private CountryEditor countryEditor;
+	
+	@Autowired
+	private RoleEditor roleEditor;
 
 	@InitBinder
 	public void initDataBinder(WebDataBinder binder) {
@@ -52,6 +65,8 @@ public class FormController {
 		// CustomDateEditor)
 		binder.registerCustomEditor(Date.class, "birthDate", new CustomDateEditor(sdf, true));
 		binder.registerCustomEditor(String.class, "name", new UppercaseEditor());
+		binder.registerCustomEditor(Country.class, "country", countryEditor);
+		binder.registerCustomEditor(Role.class, "roles", roleEditor);
 	}
 
 	@ModelAttribute("countries")
@@ -62,6 +77,27 @@ public class FormController {
 	@ModelAttribute("countriesList")
 	public List<Country> countriesList() {
 		return countryService.getAll();
+	}
+
+	@ModelAttribute("rolesList")
+	public List<Role> rolesList() {
+		return roleService.getAll();
+	}
+
+	@ModelAttribute("rolesListString")
+	public List<String> rolesListString() {
+		return Arrays.asList("ROLE_ADMIN", "ROLE_USER", "ROLE_MODERATOR");
+	}
+
+	@ModelAttribute("rolesMap")
+	public Map<String, String> rolesMap() {
+		Map<String, String> roles = new HashMap<>();
+
+		roles.put("ROLE_ADMIN", "Administrator");
+		roles.put("ROLE_USER", "User");
+		roles.put("ROLE_MODERATOR", "Moderator");
+
+		return roles;
 	}
 
 	@ModelAttribute("countriesMap")

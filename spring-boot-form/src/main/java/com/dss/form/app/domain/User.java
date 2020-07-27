@@ -1,8 +1,9 @@
 package com.dss.form.app.domain;
 
 import java.util.Date;
+import java.util.List;
 
-import javax.validation.Valid;
+// import javax.validation.Valid;
 import javax.validation.constraints.Email;
 // import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
@@ -54,8 +55,12 @@ public class User {
 	// @Future
 	private Date birthDate;
 
-	@Valid // we use when the field class has validations too
+	// @Valid // we use when the field class has validations too
+	@NotNull
 	private Country country;
+
+	@NotEmpty
+	private List<Role> roles;
 
 	public String getUsername() {
 		return username;
@@ -127,6 +132,14 @@ public class User {
 
 	public void setCountry(Country country) {
 		this.country = country;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 }
