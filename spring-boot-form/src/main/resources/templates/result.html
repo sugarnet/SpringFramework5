@@ -3,10 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <title>User Form</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 </head>
 <body>
 	<h3 th:text="${title}"></h3>
 	<ul>
+		<li th:text="${user.enabled}"></li>
+		<li th:text="${user.genre}"></li>
 		<li th:text="${user.name}"></li>
 		<li th:text="${user.surname}"></li>
 		<li th:text="${user.identifier}"></li>
@@ -18,6 +21,7 @@
 		<li th:text="${user.country.id}"></li>
 		<li th:text="${user.country.code}"></li>
 		<li th:text="${user.country.name}"></li>
+		<li th:text="${user.secret}"></li>
 	</ul>
 	<div>Roles</div>
 	<ul>

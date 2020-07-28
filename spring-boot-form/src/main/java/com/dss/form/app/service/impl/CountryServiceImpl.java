@@ -19,9 +19,9 @@ public class CountryServiceImpl implements CountryService {
 	@PostConstruct
 	private void init() {
 		countries = new ArrayList<>();
-		countries.addAll(Arrays.asList(new Country(1, "AR", "Argentina"), new Country(1, "BO", "Bolivia"),
-				new Country(1, "BR", "Brasil"), new Country(1, "CL", "Chile"), new Country(1, "PA", "Paraguay"),
-				new Country(1, "UR", "Uruguay")));
+		countries.addAll(Arrays.asList(new Country(1, "AR", "Argentina"), new Country(2, "BO", "Bolivia"),
+				new Country(3, "BR", "Brasil"), new Country(4, "CL", "Chile"), new Country(5, "PA", "Paraguay"),
+				new Country(6, "UR", "Uruguay")));
 	}
 	
 	@Override

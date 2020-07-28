@@ -62,6 +62,13 @@ public class User {
 	@NotEmpty
 	private List<Role> roles;
 
+	@NotEmpty
+	private String genre;
+
+	private Boolean enabled;
+
+	private String secret;
+
 	public String getUsername() {
 		return username;
 	}
@@ -140,6 +147,30 @@ public class User {
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public String getGenre() {
+		return genre;
+	}
+
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
+
+	public String getSecret() {
+		return secret;
+	}
+
+	public void setSecret(String secret) {
+		this.secret = secret;
 	}
 
 }

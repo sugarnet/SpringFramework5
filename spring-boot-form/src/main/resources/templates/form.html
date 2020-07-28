@@ -3,79 +3,113 @@
 <head>
 <meta charset="UTF-8">
 <title th:text="${title}"></title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+	integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+	crossorigin="anonymous">
 </head>
 <body>
-	<!-- we user th:object for indicate an automatic mapping between object user and form fields -->
-	<form th:action="@{/form}" th:object="${user}" method="post">
-	<!--  form th:action="@{/form}" method="post" -->
-		<h3 th:text="${title}"></h3>
-		<div>
-			<label for="identifier">Identifier</label>
-			<div>
-				<input type="text" id="identifier" th:field="*{identifier}" />
+	<div class="container">
+		<!-- we user th:object for indicate an automatic mapping between object user and form fields -->
+		<form th:action="@{/form}" th:object="${user}" method="post">
+			<!--  form th:action="@{/form}" method="post" -->
+			<h3 th:text="${title}"></h3>
+			<div class="form-group">
+				<label for="enabled" class="col-form-label">Enabled</label>
+				<div class="row">
+					<input type="checkbox" id="enabled" th:field="*{enabled}"
+						class="form-control col-sm-1" />
+				</div>
 			</div>
-			<div th:if="${#fields.hasErrors('identifier')}" th:errors="*{identifier}"></div>
-		</div>
-		<div>
-			<label for="name">Name</label>
-			<div>
-				<input type="text" id="name" th:field="*{name}" />
+			<div class="form-group">
+				<label class="col-form-label">Genre</label>
+				<div th:each="genre : ${genre}" class="row">
+					<input type="radio" th:field="*{genre}" th:value="${genre}"
+						class="form-control col-sm-2" /> 
+					<label th:for="${#ids.prev('genre')}"
+						th:text="${genre}" class="col-sm-2 col-form-label"></label>
+				</div>
+				<div th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}"></div>
 			</div>
-			<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-		</div>
-		<div>
-			<label for="username">Surname</label>
-			<div>
-				<input type="text" id="surname" th:field="*{surname}" />
+			<div class="form-group">
+				<label for="identifier" class="col-form-label">Identifier</label>
+				<div>
+					<input type="text" id="identifier" th:field="*{identifier}"
+						class="form-control" />
+				</div>
+				<div th:if="${#fields.hasErrors('identifier')}"
+					th:errors="*{identifier}"></div>
 			</div>
-			<div th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></div>
-		</div>
-		<div>
-			<label for="username">User</label>
-			<div>
-				<!-- input type="text" name="username" id="username" th:value="${user.username}" /-->
-				<!-- we use th:field for mapping object with the form fields -->
-				<input type="text" id="username" th:field="*{username}" />
+			<div class="form-group">
+				<label for="name" class="col-form-label">Name</label>
+				<div>
+					<input type="text" id="name" th:field="*{name}"
+						class="form-control" />
+				</div>
+				<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
 			</div>
-			<!-- div th:if="${errors != null && errors.containsKey('username')}" th:text="${errors.username}"></div-->
-			<div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
-		</div>
-		<div>
-			<label for="password">Password</label>
-			<div>
-				<!--  input type="password" name="password" id="password" / -->
-				<input type="password" id="password" th:field="*{password}" />
+			<div class="form-group">
+				<label for="username" class="col-form-label">Surname</label>
+				<div>
+					<input type="text" id="surname" th:field="*{surname}"
+						class="form-control" />
+				</div>
+				<div th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></div>
 			</div>
-			<!-- div th:if="${errors != null && errors.containsKey('password')}" th:text="${errors.password}"></div-->
-			<div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
-		</div>
-		<div>
-			<label for="username">Email</label>
-			<div>
-				<!-- input type="text" name="email" id="email" th:value="${user.email}" /-->
-				<input type="text" id="email" th:field="*{email}" />
+			<div class="form-group">
+				<label for="username" class="col-form-label">User</label>
+				<div>
+					<!-- input type="text" name="username" id="username" th:value="${user.username}" /-->
+					<!-- we use th:field for mapping object with the form fields -->
+					<input type="text" id="username" th:field="*{username}"
+						class="form-control" />
+				</div>
+				<!-- div th:if="${errors != null && errors.containsKey('username')}" th:text="${errors.username}"></div-->
+				<div th:if="${#fields.hasErrors('username')}"
+					th:errors="*{username}"></div>
 			</div>
-			<!-- div th:if="${errors != null && errors.containsKey('email')}" th:text="${errors.email}"></div -->
-			<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
-			
-		</div>
-		<div>
-			<label for="username">Account</label>
-			<div>
-				<input type="text" id="account" th:field="*{account}" />
+			<div class="form-group">
+				<label for="password" class="col-form-label">Password</label>
+				<div>
+					<!--  input type="password" name="password" id="password" / -->
+					<input type="password" id="password" th:field="*{password}"
+						class="form-control" />
+				</div>
+				<!-- div th:if="${errors != null && errors.containsKey('password')}" th:text="${errors.password}"></div-->
+				<div th:if="${#fields.hasErrors('password')}"
+					th:errors="*{password}"></div>
 			</div>
-			<div th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></div>
-			
-		</div>
-		<div>
-			<label for="username">Birth Date</label>
-			<div>
-				<input type="date" id="birthDate" th:field="*{birthDate}" />
+			<div class="form-group">
+				<label for="username" class="col-form-label">Email</label>
+				<div>
+					<!-- input type="text" name="email" id="email" th:value="${user.email}" /-->
+					<input type="text" id="email" th:field="*{email}"
+						class="form-control" />
+				</div>
+				<!-- div th:if="${errors != null && errors.containsKey('email')}" th:text="${errors.email}"></div -->
+				<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+
 			</div>
-			<div th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></div>
-			
-		</div>
-		<!--div>
+			<div class="form-group">
+				<label for="account" class="col-form-label">Account</label>
+				<div>
+					<input type="text" id="account" th:field="*{account}"
+						class="form-control" />
+				</div>
+				<div th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></div>
+
+			</div>
+			<div class="form-group">
+				<label for="username" class="col-form-label">Birth Date</label>
+				<div>
+					<input type="date" id="birthDate" th:field="*{birthDate}"
+						class="form-control" />
+				</div>
+				<div th:if="${#fields.hasErrors('birthDate')}"
+					th:errors="*{birthDate}"></div>
+
+			</div>
+			<!--div>
 			<label for="country">Country</label>
 			<div>
 				<select id="country" th:field="*{country}">
@@ -87,39 +121,46 @@
 			<div th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></div>
 			
 		</div-->
-		<div>
-			<label for="country">Country</label>
-			<div>
-				<select id="country" th:field="*{country}">
-					<option value="">-- Select --</option>
-					<option th:each="country : ${countriesList}" th:text="${country.name}" th:value="${country.id}"></option>
-				</select>
+			<div class="form-group">
+				<label for="country" class="col-form-label">Country</label>
+				<div>
+					<select id="country" th:field="*{country}" class="form-control">
+						<option value="">-- Select --</option>
+						<option th:each="country : ${countriesList}"
+							th:text="${country.name}" th:value="${country.id}"></option>
+					</select>
+				</div>
+				<div th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></div>
+
 			</div>
-			<div th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></div>
-			
-		</div>
-		<div>
-			<label>Roles</label>
-			<!--  >div th:each="role : ${rolesListString}">
+			<div class="form-group">
+				<label>Roles</label>
+				<!--  >div th:each="role : ${rolesListString}">
 				<input type="checkbox" th:field="*{roles}" th:value="${role}" />
 				<label th:text="${role}" th:for="${#ids.prev('roles')}"></label>
 			</div-->
-			<!--  >div th:each="role : ${rolesMap.entrySet()}">
+				<!--  >div th:each="role : ${rolesMap.entrySet()}">
 				<input type="checkbox" th:field="*{roles}" th:value="${role.key}" />
 				<label th:text="${role.value}" th:for="${#ids.prev('roles')}"></label>
 			</div-->
-			<div th:each="role : ${rolesList}">
-				<input type="checkbox" th:field="*{roles}" th:value="${role.id}" />
-				<label th:text="${role.name}" th:for="${#ids.prev('roles')}"></label>
+				<div th:each="role : ${rolesList}" class="row">
+					<input type="checkbox" th:field="*{roles}" th:value="${role.id}"
+						th:checked="${#lists.contains(user.roles, role)}"
+						class="form-control col-sm-2" /> 
+						<label th:text="${role.name}"
+						th:for="${#ids.prev('roles')}" class="col-form-label col-sm-2"></label>
+				</div>
+				<div th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}"></div>
+
+
 			</div>
-			<div th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}"></div>
-			
-		</div>
-		<div>
+			<input type="hidden" th:field="*{secret}" />
 			<div>
-				<input type="submit" value="Send" />
+				<div>
+					<input type="submit" value="Send" class="btn btn-primary" />
+				</div>
 			</div>
-		</div>
-	</form>
+		</form>
+	</div>
 </body>
 </html>

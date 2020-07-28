@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 // import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 // import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
@@ -69,6 +70,11 @@ public class FormController {
 		binder.registerCustomEditor(Role.class, "roles", roleEditor);
 	}
 
+	@ModelAttribute("genre")
+	public List<String> genreList() {
+		return Arrays.asList("Man", "Woman");
+	}
+	
 	@ModelAttribute("countries")
 	public List<String> countries() {
 		return Arrays.asList("Argentina", "Bolivia", "Brasil", "Chile", "Paraguay", "Uruguay");
@@ -120,6 +126,9 @@ public class FormController {
 		user.setName("Diego");
 		user.setSurname("Scifo");
 		user.setIdentifier("30.029.756-DDS");
+		user.setSecret("Some hidden value...");
+		user.setCountry(new Country(1, "AR", "Argentina"));
+		user.setRoles(Arrays.asList(new Role(1, "Administrator", "ROLE_ADMIN")));
 		model.addAttribute("title", "User Form");
 		model.addAttribute("user", user);
 		return "form";
@@ -131,7 +140,7 @@ public class FormController {
 	}
 
 	@PostMapping("/form")
-	public String process(@Valid User user, BindingResult bindingResult, Model model, SessionStatus sessionStatus) {
+	public String process(@Valid User user, BindingResult bindingResult, Model model) {
 		// we user ModelAttribute when need change the name of attribute used in the
 		// template against the controller
 		// public String process(@Valid @ModelAttribute("usuario") User user,
@@ -156,13 +165,13 @@ public class FormController {
 		 */
 
 		// we comment this line because use InitBinder
-		model.addAttribute("title", "Result Form");
 		/*
 		 * model.addAttribute("username", username); model.addAttribute("password",
 		 * password); model.addAttribute("email", email);
 		 */
 
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("title", "Result Form");
 			// using th:object mapping errors too, it isn't necessary send the errors
 			/*
 			 * Map<String, String> errors = new HashMap<>();
@@ -172,11 +181,20 @@ public class FormController {
 			return "form";
 		}
 
-		model.addAttribute("user", user);
+		// model.addAttribute("user", user);
 
+		return "redirect:/details";
+	}
+	
+	@GetMapping("/details")
+	public String details(@SessionAttribute(name = "user", required = false) User user, Model model, SessionStatus sessionStatus) {
+		
+		if (user == null) {
+			return "redirect:/form";
+		}
+		model.addAttribute("title", "Result Form");
 		// clean the session - we use it when define SessionAttributes
 		sessionStatus.setComplete();
-
 		return "result";
 	}
 

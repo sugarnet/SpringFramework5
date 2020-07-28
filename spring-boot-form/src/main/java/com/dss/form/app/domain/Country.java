@@ -42,4 +42,12 @@ public class Country {
 		this.name = name;
 	}
 
+	@Override
+	public String toString() {
+		// we implement toString for match specific initial value in the form (country field)
+		return id.toString();
+	}
+	
+	
+
 }
