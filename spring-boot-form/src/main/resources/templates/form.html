@@ -7,6 +7,7 @@
 </head>
 <body>
 	<div class="container">
+		<section th:replace="shared/time :: elapsed-time"></section>
 		<!-- we user th:object for indicate an automatic mapping between object user and form fields -->
 		<form th:action="@{/form}" th:object="${user}" method="post">
 			<!--  form th:action="@{/form}" method="post" -->

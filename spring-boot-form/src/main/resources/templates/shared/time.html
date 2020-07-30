@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<section th:fragment="elapsed-time">
+		<div class="alert alert-secondary mt-2" role="alert"
+			th:if="${elapsedTime}"
+			th:text="'Elapsed time: ' + ${elapsedTime} + ' ms'"></div>
+	</section>
+</body>
+</html>
