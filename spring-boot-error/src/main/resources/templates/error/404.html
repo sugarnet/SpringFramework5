@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Page not found!</title>
+</head>
+<body>
+	<h1>Page not found!</h1>
+	<h3 th:text="${error}"></h3>
+	<h3 th:text="${status}"></h3>
+	<h3 th:text="${timestamp}"></h3>
+	<hr>
+	<p th:text="${path}"></p>
+</body>
+</html>
