@@ -22,4 +22,10 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return em.createQuery("from Customer", Customer.class).getResultList();
 	}
 
+	@Override
+	@Transactional
+	public void save(Customer customer) {
+		em.persist(customer);
+	}
+
 }

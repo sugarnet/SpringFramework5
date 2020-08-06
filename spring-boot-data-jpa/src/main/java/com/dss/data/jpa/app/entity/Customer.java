@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 public class Customer implements Serializable {
 
@@ -20,9 +22,10 @@ public class Customer implements Serializable {
 	private Long id;
 	private String name;
 	private String lastname;
-	private String mail;
+	private String email;
 
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createdAt;
 
 	public Long getId() {
@@ -49,12 +52,12 @@ public class Customer implements Serializable {
 		this.lastname = lastname;
 	}
 
-	public String getMail() {
-		return mail;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setMail(String mail) {
-		this.mail = mail;
+	public void setEmail(String mail) {
+		this.email = mail;
 	}
 
 	public Date getCreatedAt() {

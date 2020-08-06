@@ -23,37 +23,39 @@
 				<li class="nav-item active"><a class="nav-link" href="#">Home
 						<span class="sr-only">(current)</span>
 				</a></li>
-				<li class="nav-item"><a class="nav-link" th:href="@{/customers/list}">Customers</a></li>
-				
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/customers/list}">Customers</a></li>
+
 			</ul>
-			
+
 		</div>
 	</nav>
 
 	<div class="container">
 		<h1 th:text="${title}" class="mt-2"></h1>
 		<hr>
-		<a class="btn btn-primary" th:href="@{/customers/form}" role="button">Create</a>
-		<table class="table mt-2">
-			<thead class="thead-dark">
-				<tr>
-					<th scope="col">#</th>
-					<th scope="col">Name</th>
-					<th scope="col">Last Name</th>
-					<th scope="col">Email</th>
-					<th scope="col">Created At</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="customer : ${customers}">
-					<th th:text="${customer.id}"></th>
-					<td th:text="${customer.name}"></td>
-					<td th:text="${customer.lastname}"></td>
-					<td th:text="${customer.email}"></td>
-					<td th:text="${customer.createdAt}"></td>
-				</tr>
-			</tbody>
-		</table>
+		<form th:action="@{/customers/form}" th:object="${customer}" method="post">
+			<div class="form-group">
+				<label for="name">Name</label> <input
+					type="text" class="form-control" id="name" th:field="*{name}" />
+			</div>
+			<div class="form-group">
+				<label for="lastname">Last Name</label> <input
+					type="text" class="form-control" id="lastname" th:field="*{lastname}" />
+			</div>
+			<div class="form-group">
+				<label for="email">Email</label> <input
+					type="email" class="form-control" id="email" th:field="*{email}" />
+			</div>
+			<div class="form-group">
+				<label for="createdAt">Created At</label> <input
+					type="date" class="form-control" id="createdAt" th:field="*{createdAt}" />
+			</div>
+
+			<button type="submit" class="btn btn-primary">Save</button>
+			
+			<input type="hidden" th:field="*{id}" />
+		</form>
 
 
 	</div>
