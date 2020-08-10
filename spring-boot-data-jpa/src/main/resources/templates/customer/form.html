@@ -34,27 +34,47 @@
 	<div class="container">
 		<h1 th:text="${title}" class="mt-2"></h1>
 		<hr>
-		<form th:action="@{/customers/form}" th:object="${customer}" method="post">
+		<!-- div th:remove="tag" th:object="${customer}">
+			<ul class="list-group" th:if="${#fields.hasErrors('*')}">
+				<li class="list-group-item list-group-item-danger" 
+						th:each="error : ${#fields.errors('*')}"
+						th:text="${error}"></li>
+			</ul>
+		</div-->
+		<form th:action="@{/customers/form}" th:object="${customer}"
+			method="post">
 			<div class="form-group">
-				<label for="name">Name</label> <input
-					type="text" class="form-control" id="name" th:field="*{name}" />
+				<label for="name">Name</label> <input type="text"
+					class="form-control" th:errorclass="is-invalid" id="name"
+					th:field="*{name}" />
+				<div th:errorclass="invalid-feedback"
+					th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
 			</div>
 			<div class="form-group">
-				<label for="lastname">Last Name</label> <input
-					type="text" class="form-control" id="lastname" th:field="*{lastname}" />
+				<label for="lastname">Last Name</label> <input type="text"
+					class="form-control" th:errorclass="is-invalid" id="lastname"
+					th:field="*{lastname}" />
+				<div th:errorclass="invalid-feedback"
+					th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></div>
 			</div>
 			<div class="form-group">
-				<label for="email">Email</label> <input
-					type="email" class="form-control" id="email" th:field="*{email}" />
+				<label for="email">Email</label> <input type="email"
+					class="form-control" th:errorclass="is-invalid" id="email"
+					th:field="*{email}" />
+				<div th:errorclass="invalid-feedback"
+					th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
 			</div>
 			<div class="form-group">
-				<label for="createdAt">Created At</label> <input
-					type="date" class="form-control" id="createdAt" th:field="*{createdAt}" />
+				<label for="createdAt">Created At</label> <input type="date"
+					class="form-control" th:errorclass="is-invalid" id="createdAt"
+					th:field="*{createdAt}" />
+				<div th:errorclass="invalid-feedback"
+					th:if="${#fields.hasErrors('createdAt')}" th:errors="*{createdAt}"></div>
 			</div>
 
 			<button type="submit" class="btn btn-primary">Save</button>
-			
-			<input type="hidden" th:field="*{id}" />
+
+			<!-- input type="hidden" th:field="*{id}" /-->
 		</form>
 
 

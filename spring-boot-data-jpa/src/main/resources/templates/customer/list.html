@@ -42,6 +42,7 @@
 					<th scope="col">Last Name</th>
 					<th scope="col">Email</th>
 					<th scope="col">Created At</th>
+					<th scope="col">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -51,6 +52,8 @@
 					<td th:text="${customer.lastname}"></td>
 					<td th:text="${customer.email}"></td>
 					<td th:text="${customer.createdAt}"></td>
+					<td><a th:href="@{/customers/form/} + ${customer.id}" th:text="Edit" 
+								class="btn btn-outline-primary btn-sm"></a></td>
 				</tr>
 			</tbody>
 		</table>
