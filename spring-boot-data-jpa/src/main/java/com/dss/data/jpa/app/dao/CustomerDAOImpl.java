@@ -5,38 +5,37 @@ import java.util.Objects;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-
-import org.springframework.stereotype.Repository;
 
 import com.dss.data.jpa.app.entity.Customer;
 
-@Repository
-public class CustomerDAOImpl implements CustomerDAO {
+// @Repository
+public class CustomerDAOImpl /* implements CustomerDAO */ {
 
 	@PersistenceContext
 	private EntityManager em;
 
-	@Transactional
-	@Override
+	// @Override
 	public List<Customer> findAll() {
 		return em.createQuery("from Customer", Customer.class).getResultList();
 	}
 
-	@Override
-	@Transactional
+	// @Override
 	public void save(Customer customer) {
-		if(Objects.nonNull(customer.getId()) && customer.getId() > 0) {
+		if (Objects.nonNull(customer.getId()) && customer.getId() > 0) {
 			em.merge(customer);
 		} else {
 			em.persist(customer);
 		}
 	}
 
-	@Override
-	@Transactional
+	// @Override
 	public Customer findById(Long id) {
 		return em.find(Customer.class, id);
+	}
+
+	// @Override
+	public void delete(Long id) {
+		em.remove(findById(id));
 	}
 
 }

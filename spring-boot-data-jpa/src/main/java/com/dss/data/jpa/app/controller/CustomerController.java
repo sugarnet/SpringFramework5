@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.dss.data.jpa.app.dao.CustomerDAO;
 import com.dss.data.jpa.app.entity.Customer;
+import com.dss.data.jpa.app.service.CustomerService;
 
 @Controller
 @RequestMapping("/customers")
@@ -22,12 +22,12 @@ import com.dss.data.jpa.app.entity.Customer;
 public class CustomerController {
 	
 	@Autowired
-	private CustomerDAO customerDAO;
+	private CustomerService customerService;
 
 	@GetMapping("/list")
 	public String list(Model model) {
 		model.addAttribute("title", "Customers List");
-		model.addAttribute("customers", customerDAO.findAll());
+		model.addAttribute("customers", customerService.findAll());
 		return "customer/list";
 	}
 	
@@ -43,7 +43,7 @@ public class CustomerController {
 
 		Customer customer = null;
 		if(id > 0) {
-			customer = customerDAO.findById(id);
+			customer = customerService.findById(id);
 		} else {
 			return "redirect:/customers/list";
 		}
@@ -58,9 +58,18 @@ public class CustomerController {
 			model.addAttribute("title", "Customer Form");
 			return "customer/form";
 		}
-		customerDAO.save(customer);
+		customerService.save(customer);
 		sessionStatus.setComplete();
 		
+		return "redirect:/customers/list";
+	}
+	
+	@GetMapping("/delete/{id}")
+	public String delete(@PathVariable Long id) {
+
+		if(id > 0) {
+			customerService.delete(id);
+		}
 		return "redirect:/customers/list";
 	}
 }
