@@ -28,14 +28,14 @@ public class CustomerController {
 	public String list(Model model) {
 		model.addAttribute("title", "Customers List");
 		model.addAttribute("customers", customerService.findAll());
-		return "customer/list";
+		return "modules/customer/list";
 	}
 	
 	@GetMapping("/form")
 	public String form(Model model) {
 		model.addAttribute("title", "Customer Form");
 		model.addAttribute("customer", new Customer());
-		return "customer/form";
+		return "modules/customer/form";
 	}
 	
 	@GetMapping("/form/{id}")
@@ -49,7 +49,7 @@ public class CustomerController {
 		}
 		model.addAttribute("title", "Customer Form");
 		model.addAttribute("customer", customer);
-		return "customer/form";
+		return "modules/customer/form";
 	}
 	
 	@PostMapping("/form")
