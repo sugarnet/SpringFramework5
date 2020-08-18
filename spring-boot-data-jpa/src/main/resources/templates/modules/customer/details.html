@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="shared/layout :: head"></head>
+<body>
+	<header th:replace="shared/layout :: header"></header>
+
+	<div class="container">
+
+		<div class="card mb-3 mt-3" style="max-width: 540px;">
+			<div class="row no-gutters">
+				<div class="col-md-4"
+					th:if="${not #strings.isEmpty(customer.photo)}">
+					<img th:src="@{'/uploads/' + ${customer.photo}}" class="card-img"
+						th:alt="${customer.photo}" />
+				</div>
+				<div class="col-md-8">
+					<div class="card-body">
+						<h5 class="card-title" th:text="${title}"></h5>
+						<p class="card-text"
+							th:text="${customer.name} + ' ' + ${customer.lastname}"></p>
+						<p class="card-text" th:text="${customer.email}"></p>
+						<p class="card-text">
+							<small class="text-muted" th:text="${customer.createdAt}"></small>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+	<footer th:replace="shared/layout :: footer"></footer>
+</body>
+</html>
