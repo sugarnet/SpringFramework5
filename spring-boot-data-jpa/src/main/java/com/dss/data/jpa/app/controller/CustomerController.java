@@ -2,19 +2,12 @@ package com.dss.data.jpa.app.controller;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Objects;
-import java.util.UUID;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dss.data.jpa.app.entity.Customer;
 import com.dss.data.jpa.app.service.CustomerService;
+import com.dss.data.jpa.app.service.UploadFileService;
 import com.dss.data.jpa.app.util.paginator.PageRender;
 
 @Controller
@@ -42,10 +36,11 @@ import com.dss.data.jpa.app.util.paginator.PageRender;
 @SessionAttributes("customer")
 public class CustomerController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(CustomerController.class);
-
 	@Autowired
 	private CustomerService customerService;
+
+	@Autowired
+	private UploadFileService uploadFileService;
 
 	@GetMapping("/list")
 	public String list(@RequestParam(name = "page", defaultValue = "0") Integer page, Model model) {
@@ -92,27 +87,25 @@ public class CustomerController {
 		}
 
 		if (!photo.isEmpty()) {
-			// Path photosFolder =
-			// Paths.get("src//main//resources//static//uploads//photos");
-			// String rootPath = photosFolder.toFile().getAbsolutePath();
-			// String rootPath = "/home/dscifo/uploads";
-			// byte[] bytes = rootPath.getBytes();
-			// Path path = Paths.get(rootPath + "//" + photo.getOriginalFilename());
-			String filename = UUID.randomUUID().toString().concat("_").concat(photo.getOriginalFilename());
-			Path rootPath = Paths.get("uploads").resolve(filename);
-			Path absolutePath = rootPath.toAbsolutePath();
 
-			LOGGER.info("rootPath: {}", rootPath);
-			LOGGER.info("absolutePath: {}", absolutePath);
+			if (Objects.nonNull(customer.getId()) && customer.getId() > 0 && Objects.nonNull(customer.getPhoto())
+					&& customer.getPhoto().length() > 0) {
+
+				uploadFileService.delete(customer.getPhoto());
+
+			}
+
+			String filename = null;
 			try {
-				// Files.write(path, bytes);
-				Files.copy(photo.getInputStream(), absolutePath);
-				flash.addAttribute("info", "The photo was uploaded!!!");
-				customer.setPhoto(filename);
+				filename = uploadFileService.copy(photo);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+
+			flash.addAttribute("info", "The photo was uploaded!!!");
+			customer.setPhoto(filename);
+
 		}
 
 		customerService.save(customer);
@@ -126,9 +119,14 @@ public class CustomerController {
 	public String delete(@PathVariable Long id, RedirectAttributes flash) {
 
 		if (id > 0) {
+			Customer customer = customerService.findById(id);
+
+			uploadFileService.delete(customer.getPhoto());
 			customerService.delete(id);
+		} else {
+			flash.addFlashAttribute("error", "The id can't be less or equals than zero");
 		}
-		flash.addFlashAttribute("error", "The id can't be less or equals than zero");
+		flash.addFlashAttribute("success", "The customer was deleted!");
 		return "redirect:/customers/list";
 	}
 
@@ -151,18 +149,18 @@ public class CustomerController {
 		return "modules/customer/details";
 	}
 
-	@GetMapping("/photo/{filename:.+}")
+	/**
+	 * With this method I need to change the path in the details.html and comment
+	 * the method in the MvcConfig class
+	 * 
+	 * @param filename
+	 * @return
+	 */
+	@GetMapping("/uploads/{filename:.+}")
 	public ResponseEntity<Resource> seePhoto(@PathVariable String filename) {
-		Path path = Paths.get("uploads").resolve(filename).toAbsolutePath();
-		LOGGER.info("Path Photo: {}", path.toString());
 
 		try {
-			Resource resource = new UrlResource(path.toUri());
-
-			if (!resource.exists() || !resource.isReadable()) {
-				return ResponseEntity.badRequest().build();
-			}
-
+			Resource resource = uploadFileService.load(filename);
 			return ResponseEntity.ok()
 					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
 					.body(resource);
@@ -170,5 +168,6 @@ public class CustomerController {
 			e.printStackTrace();
 			return ResponseEntity.badRequest().build();
 		}
+
 	}
 }

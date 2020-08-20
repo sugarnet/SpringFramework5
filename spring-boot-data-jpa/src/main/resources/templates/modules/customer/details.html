@@ -10,7 +10,7 @@
 			<div class="row no-gutters">
 				<div class="col-md-4"
 					th:if="${not #strings.isEmpty(customer.photo)}">
-					<img th:src="@{'/uploads/' + ${customer.photo}}" class="card-img"
+					<img th:src="@{'/customers/uploads/' + ${customer.photo}}" class="card-img"
 						th:alt="${customer.photo}" />
 				</div>
 				<div class="col-md-8">
