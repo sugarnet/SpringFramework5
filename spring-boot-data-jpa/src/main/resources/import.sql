@@ -24,3 +24,19 @@ insert into customer (name, lastname, email, created_at, photo) values ('Ray', '
 insert into customer (name, lastname, email, created_at, photo) values ('Robert', 'De Niro', 'rdeniro@mail.com', '2020-08-04', '');
 insert into customer (name, lastname, email, created_at, photo) values ('Joe', 'Pesci', 'jpesci@mail.com', '2020-08-04', '');
 
+insert into product (name, price, created_at) values ('Product 1', 23.4, NOW());
+insert into product (name, price, created_at) values ('Product 2', 9.0, NOW());
+insert into product (name, price, created_at) values ('Product 3', 223.23, NOW());
+insert into product (name, price, created_at) values ('Product 4', 123.77, NOW());
+insert into product (name, price, created_at) values ('Product 5', 3.4, NOW());
+
+insert into bill (description, observation, customer_id, created_at) values ('Bill Description 1', 'Bill Observation 1', 1, now());
+insert into bill_item (quantity, bill_id, product_id) values (2, 1, 1);
+insert into bill_item (quantity, bill_id, product_id) values (3, 1, 2);
+insert into bill_item (quantity, bill_id, product_id) values (1, 1, 3);
+insert into bill_item (quantity, bill_id, product_id) values (4, 1, 4);
+
+insert into bill (description, observation, customer_id, created_at) values ('Bill Description 2', 'Bill Observation 2', 1, now());
+insert into bill_item (quantity, bill_id, product_id) values (4, 2, 1);
+insert into bill_item (quantity, bill_id, product_id) values (3, 2, 4);
+

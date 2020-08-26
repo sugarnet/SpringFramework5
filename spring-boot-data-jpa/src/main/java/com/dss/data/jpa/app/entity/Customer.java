@@ -2,11 +2,15 @@ package com.dss.data.jpa.app.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
@@ -40,6 +44,9 @@ public class Customer implements Serializable {
 	private Date createdAt;
 
 	private String photo;
+
+	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Bill> invoices;
 
 	public Long getId() {
 		return id;
@@ -87,6 +94,14 @@ public class Customer implements Serializable {
 
 	public void setPhoto(String photo) {
 		this.photo = photo;
+	}
+
+	public List<Bill> getInvoices() {
+		return invoices;
+	}
+
+	public void setInvoices(List<Bill> invoices) {
+		this.invoices = invoices;
 	}
 
 }
