@@ -46,7 +46,7 @@ public class Customer implements Serializable {
 	private String photo;
 
 	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Bill> invoices;
+	private List<Bill> bills;
 
 	public Long getId() {
 		return id;
@@ -96,12 +96,12 @@ public class Customer implements Serializable {
 		this.photo = photo;
 	}
 
-	public List<Bill> getInvoices() {
-		return invoices;
+	public List<Bill> getBills() {
+		return bills;
 	}
 
-	public void setInvoices(List<Bill> invoices) {
-		this.invoices = invoices;
+	public void setBills(List<Bill> bills) {
+		this.bills = bills;
 	}
 
 }

@@ -27,11 +27,13 @@
 			</div>
 		</div>
 
-		<div th:if="${#lists.isEmpty(customer.invoices)}"
-			th:text="${'There isn''t invoices assigned to ' + customer.name + ' ' + customer.lastname}"
+		<div th:if="${#lists.isEmpty(customer.bills)}"
+			th:text="${'There isn''t bills assigned to ' + customer.name + ' ' + customer.lastname}"
 			class="alert alert-primary" role="alert"></div>
 
-		<table class="table mt-2" th:if="${not #lists.isEmpty(customer.invoices)}">
+		<a class="btn btn-primary" th:href="@{'/bills/form/' + ${customer.id}}" role="button">Create Bill</a>
+		
+		<table class="table mt-2" th:if="${not #lists.isEmpty(customer.bills)}">
 			<thead class="thead-dark">
 				<tr>
 					<th scope="col">#</th>
@@ -41,7 +43,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="bill : ${customer.invoices}">
+				<tr th:each="bill : ${customer.bills}">
 					<th th:text="${bill.id}"></th>
 					<td th:text="${bill.description}"></td>
 					<td th:text="${bill.createdAt}"></td>

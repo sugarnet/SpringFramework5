@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dss.data.jpa.app.dao.CustomerDAO;
+import com.dss.data.jpa.app.dao.ProductDAO;
 import com.dss.data.jpa.app.entity.Customer;
+import com.dss.data.jpa.app.entity.Product;
 import com.dss.data.jpa.app.service.CustomerService;
 
 @Service
@@ -17,6 +19,9 @@ public class CustomerServiceImpl implements CustomerService {
 	
 	@Autowired
 	private CustomerDAO customerDAO;
+	
+	@Autowired
+	private ProductDAO productDAO;
 
 	@Transactional(readOnly = true)
 	@Override
@@ -45,6 +50,12 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public Page<Customer> findAll(Pageable pageable) {
 		return customerDAO.findAll(pageable);
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public List<Product> findByName(String term) {
+		return productDAO.findByDescriptionContainingIgnoreCase(term);
 	}
 
 }

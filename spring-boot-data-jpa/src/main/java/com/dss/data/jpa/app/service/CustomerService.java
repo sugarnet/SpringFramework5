@@ -6,9 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.dss.data.jpa.app.entity.Customer;
+import com.dss.data.jpa.app.entity.Product;
 
 public interface CustomerService {
 	List<Customer> findAll();
+
 	Page<Customer> findAll(Pageable pageable);
 
 	Customer findById(Long id);
@@ -16,4 +18,6 @@ public interface CustomerService {
 	void save(Customer customer);
 
 	void delete(Long id);
+
+	List<Product> findByName(String term);
 }

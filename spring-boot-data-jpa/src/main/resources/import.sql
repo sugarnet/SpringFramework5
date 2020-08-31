@@ -24,11 +24,11 @@ insert into customer (name, lastname, email, created_at, photo) values ('Ray', '
 insert into customer (name, lastname, email, created_at, photo) values ('Robert', 'De Niro', 'rdeniro@mail.com', '2020-08-04', '');
 insert into customer (name, lastname, email, created_at, photo) values ('Joe', 'Pesci', 'jpesci@mail.com', '2020-08-04', '');
 
-insert into product (name, price, created_at) values ('Product 1', 23.4, NOW());
-insert into product (name, price, created_at) values ('Product 2', 9.0, NOW());
-insert into product (name, price, created_at) values ('Product 3', 223.23, NOW());
-insert into product (name, price, created_at) values ('Product 4', 123.77, NOW());
-insert into product (name, price, created_at) values ('Product 5', 3.4, NOW());
+insert into product (description, price, created_at) values ('Azúcar x 1KG', 23.4, NOW());
+insert into product (description, price, created_at) values ('Harina de Maiz x 500GRS', 9.0, NOW());
+insert into product (description, price, created_at) values ('Pimienta Negra x 100 GRS', 223.23, NOW());
+insert into product (description, price, created_at) values ('Agua Saborizada x 2L', 123.77, NOW());
+insert into product (description, price, created_at) values ('Bicarbonato de Sodio x 25GRS', 3.4, NOW());
 
 insert into bill (description, observation, customer_id, created_at) values ('Bill Description 1', 'Bill Observation 1', 1, now());
 insert into bill_item (quantity, bill_id, product_id) values (2, 1, 1);
