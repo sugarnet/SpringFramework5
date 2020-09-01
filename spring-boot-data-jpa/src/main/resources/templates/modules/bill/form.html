@@ -7,12 +7,13 @@
 	<div class="container">
 		<h1 th:text="${title}" class="mt-2"></h1>
 		<hr>
-		
+
 		<form th:action="@{/bills/form}" th:object="${bill}" method="post">
 
 			<div class="form-group">
 				<label>Customer</label> <input type="text" class="form-control"
-					th:value="${bill.customer.name} + ' ' + ${bill.customer.lastname}" disabled="disabled" />
+					th:value="${bill.customer.name} + ' ' + ${bill.customer.lastname}"
+					disabled="disabled" />
 
 			</div>
 			<div class="form-group">
@@ -33,12 +34,36 @@
 			</div>
 			<br />
 			<div class="form-group">
-				<label for="findProduct">Find Product</label> 
-				<input type="text" class="form-control" id="findProduct" name="findProduct" />
+				<label for="findProduct">Find Product</label> <input type="text"
+					class="form-control" id="findProduct" name="findProduct" />
 			</div>
 
+			<table th:replace="modules/bill/item-template :: billItem"></table>
+
 			<hr>
-			<a class="btn btn-secondary" th:href="@{'/customers/details/' + ${bill.customer.id}}" role="button">Back to Detail</a>
+			
+			<h5 class="text-right">Total <span class="badge badge-secondary" id="total">0.0</span></h5>
+			
+			<table class="table table-striped mt-2" id="loadBillItem">
+				<thead>
+					<tr>
+						<th scope="col">Description</th>
+						<th scope="col">Price</th>
+						<th scope="col">Quantity</th>
+						<th scope="col">Total</th>
+						<th scope="col">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+
+				</tbody>
+			</table>
+			
+
+			<hr>
+			<a class="btn btn-secondary"
+				th:href="@{'/customers/details/' + ${bill.customer.id}}"
+				role="button">Back to Detail</a>
 			<button type="submit" class="btn btn-primary">Save</button>
 
 		</form>
