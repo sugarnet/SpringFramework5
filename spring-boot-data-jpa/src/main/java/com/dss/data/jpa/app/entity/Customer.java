@@ -104,4 +104,11 @@ public class Customer implements Serializable {
 		this.bills = bills;
 	}
 
+	@Override
+	public String toString() {
+		return name + " " + lastname;
+	}
+	
+	
+
 }

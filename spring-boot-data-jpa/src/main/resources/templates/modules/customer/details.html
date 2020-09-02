@@ -40,6 +40,7 @@
 					<th scope="col">Description</th>
 					<th scope="col">Date</th>
 					<th scope="col">Total</th>
+					<th scope="col">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -48,6 +49,9 @@
 					<td th:text="${bill.description}"></td>
 					<td th:text="${bill.createdAt}"></td>
 					<td th:text="${bill.getTotal()}"></td>
+					<td>
+						<a th:href="@{/bills/details/} + ${bill.id}" th:text="Details" class="btn btn-outline-secondary btn-sm"></a>
+					</td>
 				</tr>
 			</tbody>
 		</table>

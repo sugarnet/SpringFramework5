@@ -1,8 +1,10 @@
 package com.dss.data.jpa.app.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.persistence.CascadeType;
@@ -17,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 public class Bill implements Serializable {
@@ -26,6 +29,8 @@ public class Bill implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotEmpty
 	private String description;
 	private String observation;
 
@@ -95,6 +100,14 @@ public class Bill implements Serializable {
 
 	public Double getTotal() {
 		return Optional.ofNullable(items.stream().mapToDouble(BillItem::getSubtotal).sum()).orElse(0.0);
+	}
+	
+	public void addBillItem(BillItem billItem) {
+		if (Objects.isNull(items)) {
+			items = new ArrayList<>();
+		}
+		
+		items.add(billItem);
 	}
 
 }

@@ -26,11 +26,8 @@
 			</div>
 			<div class="form-group">
 				<label for="observation">Observation</label>
-				<textarea class="form-control" th:errorclass="is-invalid"
-					id="observation" th:field="*{observation}"></textarea>
-				<div th:errorclass="invalid-feedback"
-					th:if="${#fields.hasErrors('observation')}"
-					th:errors="*{observation}"></div>
+				<textarea class="form-control" id="observation"
+					th:field="*{observation}"></textarea>
 			</div>
 			<br />
 			<div class="form-group">
@@ -41,9 +38,11 @@
 			<table th:replace="modules/bill/item-template :: billItem"></table>
 
 			<hr>
-			
-			<h5 class="text-right">Total <span class="badge badge-secondary" id="total">0.0</span></h5>
-			
+
+			<h5 class="text-right">
+				Total <span class="badge badge-secondary" id="total">0.0</span>
+			</h5>
+
 			<table class="table table-striped mt-2" id="loadBillItem">
 				<thead>
 					<tr>
@@ -58,7 +57,7 @@
 
 				</tbody>
 			</table>
-			
+
 
 			<hr>
 			<a class="btn btn-secondary"

@@ -42,6 +42,11 @@
 					return false;
 				}
 			});
+			
+			$("form").submit(function() {
+				$("#templateBillItem").remove();
+				return;
+			})
 		});
 		
 		var itemsHelper = {

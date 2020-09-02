@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="shared/layout :: head"></head>
+<body>
+	<header th:replace="shared/layout :: header"></header>
+
+	<div class="container">
+		<br>
+		<h1>Bill for <small th:text="${bill.customer}"></small> <span class="badge badge-success" th:text="'$ ' + ${bill.total}"></span></h1>
+		<div class="card mt-2" style="width: 18rem;">
+			<div class="card-body">
+				<h5 class="card-title" th:text="${bill.description}"></h5>
+				<h6 class="card-subtitle mb-2 text-muted" th:text="'$ ' + ${bill.total}"></h6>
+				<br>
+				<p class="card-text" th:text="${bill.createdAt}"></p>
+				<p class="card-text" th:text="${bill.observation}"></p>
+			</div>
+		</div>
+
+		<div th:if="${#lists.isEmpty(bill.items)}"
+			th:text="${'There isn''t item bills assigned"
+			class="alert alert-primary" role="alert"></div>
+
+		<table class="table mt-2"
+			th:if="${not #lists.isEmpty(bill.items)}">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">Description</th>
+					<th scope="col">Price</th>
+					<th scope="col">Quantity</th>
+					<th scope="col">Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="item : ${bill.items}">
+					<th th:text="${item.product.description}"></th>
+					<td th:text="${item.product.price}"></td>
+					<td th:text="${item.quantity}"></td>
+					<td th:text="${item.quantity * item.product.price}"></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<a class="btn btn-secondary"
+			th:href="@{'/customers/details/' + ${bill.customer.id}}" role="button">Back</a>
+	</div>
+	<footer th:replace="shared/layout :: footer"></footer>
+</body>
+</html>
