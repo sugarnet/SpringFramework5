@@ -15,6 +15,8 @@ public interface CustomerService {
 	Page<Customer> findAll(Pageable pageable);
 
 	Customer findById(Long id);
+	
+	Customer fetchByIdWithBills(Long id);
 
 	void save(Customer customer);
 
@@ -27,4 +29,8 @@ public interface CustomerService {
 	Product findProductById(Long id);
 	
 	Bill findBillById(Long id);
+	
+	void deleteBill(Long id);
+	
+	Bill fetchByIdWithCustomerWithBillItemWithProduct(Long id);
 }

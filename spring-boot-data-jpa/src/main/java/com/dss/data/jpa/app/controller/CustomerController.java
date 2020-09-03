@@ -133,7 +133,7 @@ public class CustomerController {
 	@GetMapping("/details/{id}")
 	public String details(@PathVariable Long id, Model model, RedirectAttributes flash) {
 
-		Customer customer = customerService.findById(id);
+		Customer customer = customerService.fetchByIdWithBills(id); // customerService.findById(id);
 
 		if (Objects.isNull(customer)) {
 			flash.addFlashAttribute("error", "The customer doesn't exists in database...");

@@ -36,7 +36,7 @@ public class BillController {
 	@GetMapping("/details/{id}")
 	public String details(@PathVariable Long id, Model model, RedirectAttributes flash) {
 
-		final Bill bill = customerService.findBillById(id);
+		final Bill bill = customerService.fetchByIdWithCustomerWithBillItemWithProduct(id); // customerService.findBillById(id);
 		
 		if (Objects.isNull(bill)) {
 			flash.addFlashAttribute("error", "Bill not found!");
@@ -105,6 +105,21 @@ public class BillController {
 		flash.addFlashAttribute("success", "Bill created!");
 		
 		return "redirect:/customers/details/" + bill.getCustomer().getId();
+	}
+	
+	@GetMapping("/delete/{id}")
+	public String delete(@PathVariable Long id, RedirectAttributes flash) {
+		
+		Bill bill = customerService.findBillById(id);
+		
+		if (Objects.nonNull(bill)) {
+			customerService.deleteBill(id);
+			flash.addFlashAttribute("success", "Bill deleted!");
+			return "redirect:/customers/details/" + bill.getCustomer().getId();
+		}
+		
+		flash.addFlashAttribute("error", "Bill not found!");
+		return "redirect:/customers/list";
 	}
 
 }

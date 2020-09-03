@@ -39,6 +39,12 @@ public class CustomerServiceImpl implements CustomerService {
 	public Customer findById(Long id) {
 		return customerDAO.findById(id).orElse(null);
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Customer fetchByIdWithBills(Long id) {
+		return customerDAO.fetchByIdWithBills(id);
+	}
 
 	@Override
 	@Transactional
@@ -80,5 +86,18 @@ public class CustomerServiceImpl implements CustomerService {
 	public Bill findBillById(Long id) {
 		return billDAO.findById(id).orElse(null);
 	}
+
+	@Override
+	@Transactional
+	public void deleteBill(Long id) {
+		billDAO.deleteById(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Bill fetchByIdWithCustomerWithBillItemWithProduct(Long id) {
+		return billDAO.fetchByIdWithCustomerWithBillItemWithProduct(id);
+	}
+
 
 }

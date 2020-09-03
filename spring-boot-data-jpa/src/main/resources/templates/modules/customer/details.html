@@ -51,6 +51,7 @@
 					<td th:text="${bill.getTotal()}"></td>
 					<td>
 						<a th:href="@{/bills/details/} + ${bill.id}" th:text="Details" class="btn btn-outline-secondary btn-sm"></a>
+						<a th:href="@{/bills/delete/} + ${bill.id}" th:text="Delete" class="btn btn-outline-danger btn-sm" onclick="return confirm('Do you want delete the bill?')"></a>
 					</td>
 				</tr>
 			</tbody>
