@@ -2,8 +2,11 @@ package com.dss.data.jpa.app.controller;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
@@ -15,8 +18,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,7 +48,7 @@ import com.dss.data.jpa.app.util.paginator.PageRender;
 @RequestMapping("/customers")
 @SessionAttributes("customer")
 public class CustomerController {
-	
+
 	protected static final Log LOGGER = LogFactory.getLog(CustomerController.class);
 
 	@Autowired
@@ -48,17 +57,44 @@ public class CustomerController {
 	@Autowired
 	private UploadFileService uploadFileService;
 
-	@GetMapping({"/", "/list"})
-	public String list(@RequestParam(name = "page", defaultValue = "0") Integer page, Model model, Authentication authentication) {
-		
+	
+	@GetMapping({ "/", "/list" })
+	public String list(@RequestParam(name = "page", defaultValue = "0") Integer page, Model model,
+			Authentication authentication, HttpServletRequest request) {
+
 		if (Objects.nonNull(authentication)) {
 			LOGGER.info("Hello user! Your username is ".concat(authentication.getName()));
 		}
-		
+
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
+
 		if (Objects.nonNull(auth)) {
-			LOGGER.info("Using ecurityContextHolder.getContext().getAuthentication(). Your username is ".concat(auth.getName()));
+			LOGGER.info("Using ecurityContextHolder.getContext().getAuthentication(). Your username is "
+					.concat(auth.getName()));
+		}
+
+		if (hasRole("ROLE_ADMIN")) {
+			LOGGER.info("Hello ".concat(auth.getName()).concat(". You have access!"));
+		} else {
+			LOGGER.info("Hello ".concat(auth.getName()).concat(". You DON'T have access!"));
+
+		}
+
+		SecurityContextHolderAwareRequestWrapper securityContext = new SecurityContextHolderAwareRequestWrapper(request,
+				"ROLE_"); // If we use "ROLE_", we don't need put it in the method isUserInRole()
+
+		if (securityContext.isUserInRole("ADMIN")) {
+			LOGGER.info("Using SecurityContextHolderAwareRequestWrapper. Hello ".concat(auth.getName()).concat(". You have access!"));
+		} else {
+			LOGGER.info("Using SecurityContextHolderAwareRequestWrapper. Hello ".concat(auth.getName()).concat(". You DON'T have access!"));
+
+		}
+		
+		if (request.isUserInRole("ROLE_ADMIN")) { // It's necessary put the complete ROLE_ADMIN 
+			LOGGER.info("Using HttpServletRequest. Hello ".concat(auth.getName()).concat(". You have access!"));
+		} else {
+			LOGGER.info("Using HttpServletRequest. Hello ".concat(auth.getName()).concat(". You DON'T have access!"));
+			
 		}
 
 		Pageable pageable = PageRequest.of(page, 4);
@@ -71,6 +107,7 @@ public class CustomerController {
 		return "modules/customer/list";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/form")
 	public String form(Model model) {
 		model.addAttribute("title", "Customer Form");
@@ -78,6 +115,9 @@ public class CustomerController {
 		return "modules/customer/form";
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	// @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')") // see documentation
+	// @Secured("ROLE_ADMIN")
 	@GetMapping("/form/{id}")
 	public String edit(@PathVariable Long id, RedirectAttributes flash, Model model) {
 
@@ -93,6 +133,7 @@ public class CustomerController {
 		return "modules/customer/form";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@PostMapping("/form")
 	public String save(@Valid Customer customer, BindingResult result, Model model,
 			@RequestParam("file") MultipartFile photo, RedirectAttributes flash, SessionStatus sessionStatus) {
@@ -131,6 +172,7 @@ public class CustomerController {
 		return "redirect:/customers/list";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/delete/{id}")
 	public String delete(@PathVariable Long id, RedirectAttributes flash) {
 
@@ -146,6 +188,8 @@ public class CustomerController {
 		return "redirect:/customers/list";
 	}
 
+	// @Secured("ROLE_USER")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/details/{id}")
 	public String details(@PathVariable Long id, Model model, RedirectAttributes flash) {
 
@@ -172,6 +216,7 @@ public class CustomerController {
 	 * @param filename
 	 * @return
 	 */
+	@Secured("ROLE_USER")
 	@GetMapping("/uploads/{filename:.+}")
 	public ResponseEntity<Resource> seePhoto(@PathVariable String filename) {
 
@@ -186,4 +231,25 @@ public class CustomerController {
 		}
 
 	}
+
+	private boolean hasRole(String role) {
+		SecurityContext context = SecurityContextHolder.getContext();
+
+		if (Objects.isNull(context)) {
+			return false;
+		}
+
+		Authentication auth = context.getAuthentication();
+
+		if (Objects.isNull(auth)) {
+			return false;
+		}
+
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+
+		// return authorities.stream().filter(a ->
+		// a.getAuthority().equals(role)).findAny().isPresent();
+		return authorities.contains(new SimpleGrantedAuthority(role));
+	}
+
 }
