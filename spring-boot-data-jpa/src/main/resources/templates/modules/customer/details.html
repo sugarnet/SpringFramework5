@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="shared/layout :: head"></head>
 <body>
 	<header th:replace="shared/layout :: header"></header>
@@ -31,7 +31,7 @@
 			th:text="${'There isn''t bills assigned to ' + customer.name + ' ' + customer.lastname}"
 			class="alert alert-primary" role="alert"></div>
 
-		<a class="btn btn-primary" th:href="@{'/bills/form/' + ${customer.id}}" role="button">Create Bill</a>
+		<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary" th:href="@{'/bills/form/' + ${customer.id}}" role="button">Create Bill</a>
 		
 		<table class="table mt-2" th:if="${not #lists.isEmpty(customer.bills)}">
 			<thead class="thead-dark">
@@ -50,8 +50,8 @@
 					<td th:text="${bill.createdAt}"></td>
 					<td th:text="${bill.getTotal()}"></td>
 					<td>
-						<a th:href="@{/bills/details/} + ${bill.id}" th:text="Details" class="btn btn-outline-secondary btn-sm"></a>
-						<a th:href="@{/bills/delete/} + ${bill.id}" th:text="Delete" class="btn btn-outline-danger btn-sm" onclick="return confirm('Do you want delete the bill?')"></a>
+						<a sec:authorize="hasRole('ROLE_USER')" th:href="@{/bills/details/} + ${bill.id}" th:text="Details" class="btn btn-outline-secondary btn-sm"></a>
+						<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/bills/delete/} + ${bill.id}" th:text="Delete" class="btn btn-outline-danger btn-sm" onclick="return confirm('Do you want delete the bill?')"></a>
 					</td>
 				</tr>
 			</tbody>
