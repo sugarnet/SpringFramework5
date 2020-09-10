@@ -40,3 +40,15 @@ insert into bill (description, observation, customer_id, created_at) values ('Bi
 insert into bill_item (quantity, bill_id, product_id) values (4, 2, 1);
 insert into bill_item (quantity, bill_id, product_id) values (3, 2, 4);
 
+
+INSERT INTO user (enabled, password, username) VALUES (1, '$2y$12$o204z8dA5jytrfQFNyxCHuTnjAINjr3zic4PydRPYJ/QoCCztcawK', 'admin');
+INSERT INTO user (enabled, password, username) VALUES (1, '$2a$10$Y3c/y3fpMx3SwdRfIkzwgOyNOkC8Gs2sLPvQ7BC.aMa/WcOaTbL8W', 'dscifo');
+
+INSERT INTO role (role, user_id) VALUES ('ROLE_USER', 1);
+INSERT INTO role (role, user_id) VALUES ('ROLE_ADMIN', 1);
+INSERT INTO role (role, user_id) VALUES ('ROLE_USER', 2);
+
+
+
+
+

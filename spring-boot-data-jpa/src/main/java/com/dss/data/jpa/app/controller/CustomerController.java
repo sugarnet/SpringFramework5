@@ -3,8 +3,8 @@ package com.dss.data.jpa.app.controller;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -56,11 +57,14 @@ public class CustomerController {
 
 	@Autowired
 	private UploadFileService uploadFileService;
+	
+	@Autowired
+	private MessageSource messageSource;
 
 	
 	@GetMapping({ "/", "/list" })
 	public String list(@RequestParam(name = "page", defaultValue = "0") Integer page, Model model,
-			Authentication authentication, HttpServletRequest request) {
+			Authentication authentication, HttpServletRequest request, Locale locale) {
 
 		if (Objects.nonNull(authentication)) {
 			LOGGER.info("Hello user! Your username is ".concat(authentication.getName()));
@@ -101,7 +105,7 @@ public class CustomerController {
 		Page<Customer> customers = customerService.findAll(pageable);
 		PageRender<Customer> pageRender = new PageRender<>("/customers/list", customers);
 
-		model.addAttribute("title", "Customers List");
+		model.addAttribute("title", messageSource.getMessage("text.customer.list.title", null, locale));
 		model.addAttribute("customers", customers);
 		model.addAttribute("page", pageRender);
 		return "modules/customer/list";

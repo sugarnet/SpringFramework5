@@ -12,6 +12,9 @@ public class SpringBootDataJpaApplication implements CommandLineRunner {
 
 	@Autowired
 	private UploadFileService uploadFileService;
+	
+	/*@Autowired
+	private BCryptPasswordEncoder passwordEncoder;*/
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootDataJpaApplication.class, args);
@@ -22,6 +25,7 @@ public class SpringBootDataJpaApplication implements CommandLineRunner {
 
 		uploadFileService.deleteAll();
 		uploadFileService.init();
+		
 	}
 
 }
