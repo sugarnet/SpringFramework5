@@ -15,7 +15,8 @@
 				<p class="card-text" th:text="${bill.createdAt}"></p>
 				<p class="card-text" th:text="${bill.observation}"></p>
 				<hr>
-				<a class="btn btn-primary" th:href="@{'/bills/details/' + ${bill.id}(format=pdf)}" role="button">PDF</a>
+				<a class="btn btn-primary mr-1" th:href="@{'/bills/details/' + ${bill.id}(format=pdf)}" role="button">PDF</a>
+				<a class="btn btn-success" th:href="@{'/bills/details/' + ${bill.id}(format=xlsx)}" role="button">XLS</a>
 			</div>
 		</div>
 
