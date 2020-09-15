@@ -20,6 +20,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 public class Bill implements Serializable {
@@ -82,6 +83,7 @@ public class Bill implements Serializable {
 		this.createdAt = createdAt;
 	}
 
+	@XmlTransient
 	public Customer getCustomer() {
 		return customer;
 	}

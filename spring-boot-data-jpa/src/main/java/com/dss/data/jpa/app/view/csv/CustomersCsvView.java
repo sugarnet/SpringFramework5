@@ -41,6 +41,7 @@ public class CustomersCsvView extends AbstractView {
 		ICsvBeanWriter beanWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
 		
 		String header[] = {"id", "name", "lastname", "email", "createdAt"};
+		beanWriter.writeHeader(header);
 		
 		for (Customer customer : customers) {
 			beanWriter.write(customer, header);
