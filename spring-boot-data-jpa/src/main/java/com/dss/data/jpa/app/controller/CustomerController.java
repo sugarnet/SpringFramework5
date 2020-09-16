@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,6 +45,7 @@ import com.dss.data.jpa.app.entity.Customer;
 import com.dss.data.jpa.app.service.CustomerService;
 import com.dss.data.jpa.app.service.UploadFileService;
 import com.dss.data.jpa.app.util.paginator.PageRender;
+import com.dss.data.jpa.app.view.xml.CustomerList;
 
 @Controller
 @RequestMapping("/customers")
@@ -109,6 +111,11 @@ public class CustomerController {
 		model.addAttribute("customers", customers);
 		model.addAttribute("page", pageRender);
 		return "modules/customer/list";
+	}
+	
+	@GetMapping("/list-rest")
+	public @ResponseBody CustomerList listRest() {
+		return new CustomerList(customerService.findAll());
 	}
 
 	@Secured("ROLE_ADMIN")

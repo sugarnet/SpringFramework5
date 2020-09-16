@@ -22,6 +22,9 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 public class Bill implements Serializable {
 
@@ -36,8 +39,10 @@ public class Bill implements Serializable {
 	private String observation;
 
 	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createdAt;
 
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
