@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<script type="text/javascript" th:fragment="javascript">
+		$(document).ready(function() {
+			$("#findProduct").autocomplete({
+				source: function(request, response) {
+					$.ajax({
+						url: "/bills/findProduct/" + request.term,
+						dataType: "json",
+						data: {
+							term: request.term
+						},
+						success: function(data) {
+							response($.map(data, function(item) {
+								return {
+									value: item.id,
+									label: item.description,
+									price: item.price
+								};
+							}));
+						}
+					});
+				},
+				select: function(event, ui) {
+					// $("#findProduct").val(ui.item.label);
+					
+					if (itemsHelper.hasProduct(ui.item.value)) {
+						itemsHelper.incrementQuantity(ui.item.value, ui.item.price);
+						return false;
+					}
+					
+					var line = $("#templateBillItem").html();
+					line = line.replace(/{ID}/g, ui.item.value);
+					line = line.replace(/{DESCRIPTION}/g, ui.item.label);
+					line = line.replace(/{PRICE}/g, ui.item.price);
+					
+					$("#loadBillItem tbody").append(line);
+					
+					itemsHelper.calculateItem(ui.item.value, ui.item.price, 1);
+					
+					return false;
+				}
+			});
+			
+			$("form").submit(function() {
+				$("#templateBillItem").remove();
+				return;
+			})
+		});
+		
+		var itemsHelper = {
+				calculateItem: function(id, price, quantity) {
+					var total = parseFloat(price) * parseFloat(quantity);
+					total = total.toFixed(2);
+					$("#total_line_" + id).html(total);
+					this.calculateTotal();
+				},
+				hasProduct: function(id) {
+					var result = false;
+					
+					$('input[name="item_id[]"]').each(function(){
+						if (parseInt(id) == parseInt($(this).val())) {
+							result = true;
+						}
+					});
+					
+					return result;
+				},
+				incrementQuantity: function(id, price) {
+					var quantity = $("#quantity_" + id).val() ? parseInt($("#quantity_" + id).val()) : 0;
+					$("#quantity_" + id).val(++quantity);
+					this.calculateItem(id, price, quantity);
+				},
+				removeItem: function(id) {
+					$("#row_" + id).remove();
+					this.calculateTotal();
+				},
+				calculateTotal: function() {
+					var total = 0;
+					
+					$("span[id^='total_line_']").each(function(){
+						total += parseFloat($(this).html());	
+					});
+					
+					$("#total").html(total);
+				}
+		};
+	</script>
+</body>
+</html>

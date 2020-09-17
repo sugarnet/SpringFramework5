@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="shared/layout :: head"></head>
+<body>
+	<div class="container mt-2">
+		<div class="alert alert-danger" role="alert">
+			<h4 class="alert-heading">Access denied!</h4>
+			<!-- p>Sorry <span th:text="${#httpServletRequest.remoteUser}"></span>. You don't have permissions for access to this operation.</p-->
+			<p>Sorry <span th:text="${#authentication.name}"></span>. You don't have permissions for access to this operation.</p>
+			<hr>
+			<a th:href="@{/customers/list}" class="btn btn-secondary">Go to Customers List</a>
+		</div>
+	</div>
+	<footer th:replace="shared/layout :: footer"></footer>
+</body>
+</html>
