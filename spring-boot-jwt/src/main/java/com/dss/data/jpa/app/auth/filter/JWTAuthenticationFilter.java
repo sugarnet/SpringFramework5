@@ -1,14 +1,10 @@
 package com.dss.data.jpa.app.auth.filter;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,24 +14,23 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.dss.data.jpa.app.auth.service.JWTService;
+import com.dss.data.jpa.app.auth.service.JWTServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	private AuthenticationManager authenticationManager;
+	private JWTService jwtService;
 
-	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+	public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTService jwtService) {
 		this.authenticationManager = authenticationManager;
 		setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/api/login", "POST"));
+		this.jwtService = jwtService;
 	}
 
 	@Override
@@ -73,19 +68,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
 
-		String username = ((User) authResult.getPrincipal()).getUsername();
+		String token = jwtService.create(authResult);
 
-		Collection<? extends GrantedAuthority> roles = authResult.getAuthorities();
-
-		Claims claims = Jwts.claims();
-		claims.put("authorities", new ObjectMapper().writeValueAsString(roles));
-		
-		SecretKey secretKey = new SecretKeySpec("someSecretKeyFromSpringFrameworkCourse".getBytes(), SignatureAlgorithm.HS256.getJcaName());
-
-		String token = Jwts.builder().setSubject(username).setClaims(claims).signWith(secretKey)
-				.setIssuedAt(new Date()).setExpiration(new Date(System.currentTimeMillis() + 14000000)).compact();
-
-		response.addHeader("Authorization", "Bearer ".concat(token));
+		response.addHeader(JWTServiceImpl.HEADER_STRING, JWTServiceImpl.TOKEN_PREFIX.concat(token));
 
 		Map<String, Object> body = new HashMap<String, Object>();
 		body.put("token", token);

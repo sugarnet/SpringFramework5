@@ -1,6 +1,7 @@
 package com.dss.data.jpa.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ public class CustomerRestController {
 	private CustomerService customerService;
 
 	@GetMapping("/list")
+	@Secured("ROLE_ADMIN")
 	public CustomerList list() {
 		return new CustomerList(customerService.findAll());
 	}
