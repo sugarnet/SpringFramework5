@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="shared/layout :: head"></head>
+<body>
+	<header th:replace="shared/layout :: header"></header>
+
+	<div class="container">
+		<h1 th:text="${title}" class="mt-2"></h1>
+		<hr>
+		<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary mr-1" th:href="@{/customers/form}" role="button">Create</a>
+		<a class="btn btn-secondary mr-1" th:href="@{/customers/list(format=csv)}" role="button">CSV</a>
+		<a class="btn btn-secondary mr-1" th:href="@{/customers/list(format=xml)}" role="button">XML</a>
+		<a class="btn btn-secondary" th:href="@{/customers/list(format=json)}" role="button">JSON</a>
+		<table class="table mt-2">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col" th:text="#{text.customer.name}">Name</th>
+					<th scope="col" th:text="#{text.customer.lastname}">Last Name</th>
+					<th scope="col" th:text="#{text.customer.email}">Email</th>
+					<th scope="col" th:text="#{text.customer.createdAt}">Created At</th>
+					<th scope="col" th:text="#{text.customer.actions}">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="customer : ${customers}">
+					<th th:text="${customer.id}"></th>
+					<td th:text="${customer.name}"></td>
+					<td th:text="${customer.lastname}"></td>
+					<td th:text="${customer.email}"></td>
+					<td th:text="${customer.createdAt}"></td>
+					<td>
+						<a sec:authorize="hasRole('ROLE_USER')" th:href="@{/customers/details/} + ${customer.id}" th:text="Details" class="btn btn-outline-secondary btn-sm"></a>
+						<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/customers/form/} + ${customer.id}" th:text="Edit" class="btn btn-outline-primary btn-sm"></a> 
+						<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/bills/form/} + ${customer.id}" th:text="'Create Bill'" class="btn btn-outline-info btn-sm"></a> 
+						<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/customers/delete/} + ${customer.id}" th:text="Delete" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure?')"></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<nav th:replace="shared/paginator-nav :: paginator"></nav>
+
+	</div>
+	<footer th:replace="shared/layout :: footer"></footer>
+</body>
+</html>

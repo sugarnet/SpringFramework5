@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="shared/layout :: head"></head>
+<body>
+	<header th:replace="shared/layout :: header"></header>
+
+	<div class="container">
+
+		<div class="card mb-3 mt-3" style="max-width: 540px;">
+			<div class="row no-gutters">
+				<div class="col-md-4"
+					th:if="${not #strings.isEmpty(customer.photo)}">
+					<img th:src="@{'/customers/uploads/' + ${customer.photo}}"
+						class="card-img" th:alt="${customer.photo}" />
+				</div>
+				<div class="col-md-8">
+					<div class="card-body">
+						<h5 class="card-title" th:text="${title}"></h5>
+						<p class="card-text"
+							th:text="${customer.name} + ' ' + ${customer.lastname}"></p>
+						<p class="card-text" th:text="${customer.email}"></p>
+						<p class="card-text">
+							<small class="text-muted" th:text="${customer.createdAt}"></small>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div th:if="${#lists.isEmpty(customer.bills)}"
+			th:text="${'There isn''t bills assigned to ' + customer.name + ' ' + customer.lastname}"
+			class="alert alert-primary" role="alert"></div>
+
+		<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary" th:href="@{'/bills/form/' + ${customer.id}}" role="button">Create Bill</a>
+		
+		<table class="table mt-2" th:if="${not #lists.isEmpty(customer.bills)}">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Description</th>
+					<th scope="col">Date</th>
+					<th scope="col">Total</th>
+					<th scope="col">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="bill : ${customer.bills}">
+					<th th:text="${bill.id}"></th>
+					<td th:text="${bill.description}"></td>
+					<td th:text="${bill.createdAt}"></td>
+					<td th:text="${bill.getTotal()}"></td>
+					<td>
+						<a sec:authorize="hasRole('ROLE_USER')" th:href="@{/bills/details/} + ${bill.id}" th:text="Details" class="btn btn-outline-secondary btn-sm"></a>
+						<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/bills/delete/} + ${bill.id}" th:text="Delete" class="btn btn-outline-danger btn-sm" onclick="return confirm('Do you want delete the bill?')"></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<footer th:replace="shared/layout :: footer"></footer>
+</body>
+</html>
