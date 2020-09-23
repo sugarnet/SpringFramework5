@@ -19,8 +19,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotEmpty;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -33,7 +34,7 @@ public class Bill implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotEmpty
 	private String description;
 	private String observation;
@@ -108,12 +109,12 @@ public class Bill implements Serializable {
 	public Double getTotal() {
 		return Optional.ofNullable(items.stream().mapToDouble(BillItem::getSubtotal).sum()).orElse(0.0);
 	}
-	
+
 	public void addBillItem(BillItem billItem) {
 		if (Objects.isNull(items)) {
 			items = new ArrayList<>();
 		}
-		
+
 		items.add(billItem);
 	}
 

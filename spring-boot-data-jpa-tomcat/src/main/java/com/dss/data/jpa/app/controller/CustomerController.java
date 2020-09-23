@@ -151,7 +151,7 @@ public class CustomerController {
 
 		if (result.hasErrors()) {
 			model.addAttribute("title", "Customer Form");
-			return "customer/form";
+			return "modules/customer/form";
 		}
 
 		if (!photo.isEmpty()) {
