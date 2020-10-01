@@ -1,0 +1,21 @@
+<h1>Customers List</h1>
+<table class="table mt-2">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Created At</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let customer of customers">
+      <td>{{ customer.id }}</td>
+      <td>{{ customer.name }}</td>
+      <td>{{ customer.lastname }}</td>
+      <td>{{ customer.email }}</td>
+      <td>{{ customer.createdAt }}</td>
+    </tr>
+  </tbody>
+</table>
