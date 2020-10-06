@@ -15,6 +15,7 @@ const routes: Routes = [
   {path: '', redirectTo: '/customers', pathMatch: 'full'},
   {path: 'customers', component: CustomersComponent},
   {path: 'customers/form', component: FormComponent},
+  {path: 'customers/form/:id', component: FormComponent},
   {path: 'ng-for', component: NgForComponent}
 ];
 

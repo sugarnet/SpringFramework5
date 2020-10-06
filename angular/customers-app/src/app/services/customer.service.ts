@@ -30,4 +30,16 @@ export class CustomerService {
   create(customer: Customer): Observable<Customer> {
     return this.http.post<Customer>(this.endpoint, customer, {headers: this.headers});
   }
+
+  update(customer: Customer): Observable<Customer> {
+    return this.http.put<Customer>(this.endpoint, customer, {headers: this.headers});
+  }
+
+  delete(id: number): Observable<Customer> {
+    return this.http.delete<Customer>(`${this.endpoint}/${id}`, {headers: this.headers});
+  }
+
+  getCustomer(id: number): Observable<Customer> {
+    return this.http.get<Customer>(`${this.endpoint}/${id}`);
+  }
 }
