@@ -42,7 +42,10 @@ export class FormComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       let id = params['id'];
       if (id) {
-        this.customerService.getCustomer(id).subscribe(customer => this.customer = customer);
+        this.customerService.getCustomer(id).subscribe(customer => {
+          console.log(customer);
+          this.customer = customer;
+        });
       }
     });
   }

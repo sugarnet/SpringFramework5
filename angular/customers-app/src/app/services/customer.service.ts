@@ -1,8 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { Customer } from '../models/customer-model';
+import Swal from 'sweetalert2';
 
 
 @Injectable({
@@ -19,7 +21,7 @@ export class CustomerService {
     {id: 1, name: 'Sol', lastname: 'Mauna', email: 'sol@mail.com', createdAt: '2020-09-30'}
   ];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   getCustomers(): Observable<Customer[]> {
     // return of(this.customers);
@@ -28,18 +30,44 @@ export class CustomerService {
   }
 
   create(customer: Customer): Observable<Customer> {
-    return this.http.post<Customer>(this.endpoint, customer, {headers: this.headers});
+    return this.http.post<Customer>(this.endpoint, customer, {headers: this.headers}).pipe(
+      map((response: any) => response.customer as Customer),
+      catchError(e => {
+      this.router.navigate(['/customers']);
+      Swal.fire('Create Error', e.error.message, 'error');
+      console.error(e.error.error);
+      return throwError(e);
+    }));
   }
-
+  
   update(customer: Customer): Observable<Customer> {
-    return this.http.put<Customer>(this.endpoint, customer, {headers: this.headers});
+    return this.http.put<Customer>(this.endpoint, customer, {headers: this.headers}).pipe(
+      map((response: any) => response.customer as Customer),
+      catchError(e => {
+      this.router.navigate(['/customers']);
+      Swal.fire('Update Error', e.error.message, 'error');
+      console.error(e.error.error);
+      return throwError(e);
+    }));
   }
-
+  
   delete(id: number): Observable<Customer> {
-    return this.http.delete<Customer>(`${this.endpoint}/${id}`, {headers: this.headers});
+    return this.http.delete<Customer>(`${this.endpoint}/${id}`, {headers: this.headers}).pipe(catchError(e => {
+      this.router.navigate(['/customers']);
+      Swal.fire('Delete Error', e.error.message, 'error');
+      console.error(e.error.error);
+      return throwError(e);
+    }));
   }
-
+  
   getCustomer(id: number): Observable<Customer> {
-    return this.http.get<Customer>(`${this.endpoint}/${id}`);
+    return this.http.get<Customer>(`${this.endpoint}/${id}`).pipe(
+      map((response: any) => response.customer as Customer),
+      catchError(e => {
+      this.router.navigate(['/customers']);
+      Swal.fire('Error', e.error.message, 'error');
+      console.error(e.error.error);
+      return throwError(e);
+    }));
   }
 }
