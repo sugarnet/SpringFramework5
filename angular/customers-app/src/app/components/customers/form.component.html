@@ -1,20 +1,74 @@
 <h1>{{ title }}</h1>
-<form>
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input type="text" class="form-control" id="name" name="name" [(ngModel)]="customer.name" placeholder="Frodo">
+<form #customerForm="ngForm">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input 
+      type="text" 
+      class="form-control"
+      id="name" name="name"
+      [(ngModel)]="customer.name"
+      placeholder="Frodo"
+      #name="ngModel"> <!-- required minlength="4" -->
+    <!--div class="text-danger mt-1" *ngIf="name.invalid && (name.dirty || name.touched)">
+      <small *ngIf="name.errors.required">
+        Required
+      </small>
+      <small *ngIf="name.errors.minlength">
+        Min lenght: 4 characters
+      </small>
+    </div-->
+  </div>
+  <div class="form-group">
+    <label for="lastName">Last Name</label>
+    <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="customer.lastname" placeholder="Baggins" #lastName="ngModel"> <!-- required -->
+    <!--div class="text-danger mt-1" *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
+      <small *ngIf="lastName.errors.required">
+        Required
+      </small>
+      
+    </div-->
+  </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" class="form-control" id="email" name="email" [(ngModel)]="customer.email" placeholder="frodo@mail.com" #email="ngModel"> <!-- required email -->
+    <!--div class="text-danger mt-1" *ngIf="email.invalid && (email.dirty || email.touched)">
+      <small *ngIf="email.errors.required">
+        Required
+      </small>
+      <small *ngIf="email.errors.email">
+        Invalid email format
+      </small>
+    </div-->
+  </div>
+  <button class="btn btn-danger" [routerLink]="['/customers']">Back</button>
+  <button 
+    class="btn btn-primary ml-2" 
+    *ngIf="!customer.id else elseBlock" 
+    (click)="create()"
+    [disabled]="customerForm.form.invalid">Create</button>
+  <ng-template #elseBlock>
+    <button class="btn btn-primary ml-2" (click)="edit()" [disabled]="customerForm.form.invalid">Edit</button>
+  </ng-template>
+</form>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Errors</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul>
+          <li *ngFor="let error of errors"> {{ error }} </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="lastName">Last Name</label>
-      <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="customer.lastname" placeholder="Baggins">
-    </div>
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input type="email" class="form-control" id="email" name="email" [(ngModel)]="customer.email" placeholder="frodo@mail.com">
-    </div>
-    <button class="btn btn-danger" [routerLink]="['/customers']">Back</button>
-    <button class="btn btn-primary ml-2" *ngIf="!customer.id else elseBlock" (click)="create()">Create</button>
-    <ng-template #elseBlock>
-      <button class="btn btn-primary ml-2" (click)="edit()">Edit</button>
-    </ng-template>
-  </form>
+  </div>
+</div>

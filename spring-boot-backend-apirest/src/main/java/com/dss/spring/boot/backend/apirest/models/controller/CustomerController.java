@@ -4,11 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,12 +64,22 @@ public class CustomerController {
 	}
 
 	@PostMapping("/customers")
-	public ResponseEntity<?> create(@RequestBody Customer customer) {
+	public ResponseEntity<?> create(@Valid @RequestBody Customer customer, BindingResult result) {
 		Map<String, Object> response;
 		try {
-			Customer c = customerService.save(customer);
 
 			response = new HashMap<>();
+
+			if (result.hasErrors()) {
+				List<String> errors = result.getFieldErrors().stream()
+						.map(error -> error.getField().concat(": ").concat(error.getDefaultMessage()))
+						.collect(Collectors.toList());
+				response.put("errors", errors);
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+			}
+
+			Customer c = customerService.save(customer);
+
 			response.put("message", "Customer created succefully");
 			response.put("customer", c);
 
@@ -80,19 +94,26 @@ public class CustomerController {
 	}
 
 	@PutMapping("/customers")
-	public ResponseEntity<?> update(@RequestBody Customer customer) {
+	public ResponseEntity<?> update(@Valid @RequestBody Customer customer, BindingResult result) {
 
-		Map<String, Object> response;
+		Map<String, Object> response = new HashMap<>();
 		try {
+
+			if (result.hasErrors()) {
+				List<String> errors = result.getFieldErrors().stream()
+						.map(error -> error.getField().concat(": ").concat(error.getDefaultMessage()))
+						.collect(Collectors.toList());
+				response.put("errors", errors);
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+			}
+
 			Customer c = customerService.findById(customer.getId());
 
 			if (Objects.isNull(c)) {
-				response = new HashMap<>();
 				response.put("message", "Customer with id ".concat(customer.getId().toString()).concat(" not found"));
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 			}
 			c = customerService.save(customer);
-			response = new HashMap<>();
 			response.put("message", "Customer updated succefully");
 			response.put("customer", c);
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);

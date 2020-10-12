@@ -4,6 +4,8 @@ import { Customer } from 'src/app/models/customer-model';
 import { CustomerService } from 'src/app/services/customer.service';
 import Swal from 'sweetalert2';
 
+declare var $: any;
+
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
@@ -11,6 +13,7 @@ import Swal from 'sweetalert2';
 export class FormComponent implements OnInit {
   title: string = 'Create Customer';
   customer: Customer = new Customer();
+  errors: string[] = [];
 
   constructor(
     private customerService: CustomerService,
@@ -27,6 +30,9 @@ export class FormComponent implements OnInit {
     this.customerService.create(this.customer).subscribe((c) => {
       Swal.fire('Customer Created', `${c.name} ${c.lastname}`, 'success');
       this.router.navigate(['/customers']);
+    }, err => {
+      this.errors = err.error.errors as string[];
+      this.showModal();
     });
   }
 
@@ -35,6 +41,9 @@ export class FormComponent implements OnInit {
     this.customerService.update(this.customer).subscribe((c) => {
       Swal.fire('Customer Edited', `${c.name} ${c.lastname}`, 'success');
       this.router.navigate(['/customers']);
+    }, err => {
+      this.errors = err.error.errors as string[];
+      this.showModal();
     });
   }
 
@@ -48,5 +57,13 @@ export class FormComponent implements OnInit {
         });
       }
     });
+  }
+
+  showModal() {
+    $('#exampleModal').modal('show');
+  }
+
+  hideModal() {
+    $('#exampleModal').modal('hide');
   }
 }

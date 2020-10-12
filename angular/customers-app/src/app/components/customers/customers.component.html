@@ -16,10 +16,10 @@
   <tbody>
     <tr *ngFor="let customer of customers">
       <td>{{ customer.id }}</td>
-      <td>{{ customer.name }}</td>
-      <td>{{ customer.lastname }}</td>
+      <td>{{ customer.name | uppercase }}</td>
+      <td>{{ customer.lastname | uppercase }}</td>
       <td>{{ customer.email }}</td>
-      <td>{{ customer.createdAt }}</td>
+      <td>{{ customer.createdAt | date: 'EEEE-MM-yyyy' }}</td>
       <td>
         <button class="btn btn-primary btn-sm" [routerLink]="['/customers/form', customer.id]">Edit</button>
         <button class="btn btn-danger btn-sm ml-1" (click)="delete(customer)">Delete</button>
